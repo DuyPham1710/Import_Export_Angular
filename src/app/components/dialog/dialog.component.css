@@ -225,6 +225,51 @@
     margin: 0 20px;
 }
 
+.sheet-list {
+    padding: 16px 24px;
+    background: #fff;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.sheet-list label {
+    display: block;
+    margin-bottom: 12px;
+    color: #495057;
+    font-size: 1rem;
+}
+
+.sheet-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sheet-buttons button {
+    background: #f8f9fa !important;
+    color: #495057 !important;
+    border: 1px solid #dee2e6 !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    font-size: 0.9rem !important;
+    transition: all 0.2s !important;
+}
+
+.sheet-buttons button:hover {
+    background: #e9ecef !important;
+    border-color: #adb5bd !important;
+}
+
+.sheet-buttons button.selected-sheet {
+    background: #007bff !important;
+    color: #fff !important;
+    border-color: #007bff !important;
+}
+
+.sheet-buttons button.selected-sheet:hover {
+    background: #0056b3 !important;
+    border-color: #0056b3 !important;
+}
+
 .export-btn {
     width: 160px !important;
     background: #28a745 !important;

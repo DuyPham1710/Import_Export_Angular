@@ -21,6 +21,17 @@
             </div>
         </div>
 
+        <!-- Sheet List Section - Only for Import -->
+        <div class="sheet-list" *ngIf="mode === 'import' && listSheets.length > 0">
+            <label><b>Chọn sheet:</b></label>
+            <div class="sheet-buttons">
+                <button *ngFor="let sheet of listSheets" pButton type="button" class="p-button-sm p-button-outlined"
+                    [class.selected-sheet]="sheet === selectedSheet" (click)="selectSheet(sheet)">
+                    {{ sheet }}
+                </button>
+            </div>
+        </div>
+
         <!-- Export Info Section - Only for Export -->
         <div class="export-info-section" *ngIf="mode === 'export'">
             <p><strong>{{ previewData.length }}</strong> sản phẩm đã được chọn để export</p>

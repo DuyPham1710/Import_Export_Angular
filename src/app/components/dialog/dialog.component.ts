@@ -23,6 +23,9 @@ export class DialogComponent implements OnInit {
     isLoading: boolean = false;
     validationErrors: string[] = [];
     isValidData: boolean = false;
+    listSheets: string[] = [];
+    selectedSheet: string = '';
+    workbook: any = null;
 
     constructor(private cdr: ChangeDetectorRef) { }
 
@@ -40,6 +43,8 @@ export class DialogComponent implements OnInit {
             this.isLoading = true;
             this.validationErrors = [];
             this.previewData = [];
+            this.listSheets = [];
+            this.selectedSheet = '';
 
             this.readExcelFile(file);
         }
@@ -50,12 +55,11 @@ export class DialogComponent implements OnInit {
         reader.onload = (e: any) => {
             try {
                 const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                this.workbook = XLSX.read(data, { type: 'array' });
+                this.listSheets = this.workbook.SheetNames;
+                this.selectedSheet = this.workbook.SheetNames[0]; // Chọn sheet đầu tiên mặc định
 
-                this.processExcelData(jsonData);
+                this.processSelectedSheet();
             } catch (error) {
                 this.validationErrors.push('Lỗi đọc file Excel: ' + error);
                 this.isLoading = false;
@@ -65,7 +69,23 @@ export class DialogComponent implements OnInit {
         reader.readAsArrayBuffer(file);
     }
 
+    selectSheet(sheetName: string): void {
+        this.selectedSheet = sheetName;
+        this.processSelectedSheet();
+    }
+
+    private processSelectedSheet(): void {
+        if (!this.workbook || !this.selectedSheet) return;
+
+        const worksheet = this.workbook.Sheets[this.selectedSheet];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        this.processExcelData(jsonData);
+    }
+
     private processExcelData(data: any[]): void {
+        // Reset validation errors khi chuyển sheet
+        this.validationErrors = [];
+
         if (data.length < 2) {
             this.validationErrors.push('File Excel phải có ít nhất 2 dòng (header và dữ liệu)');
             this.isLoading = false;
