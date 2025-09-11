@@ -215,3 +215,25 @@
     color: #6c757d;
     font-size: 0.9rem;
 }
+
+.export-info-section {
+    padding: 16px 24px;
+    background: #e9ecef;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 1rem;
+    color: #495057;
+    margin: 0 20px;
+}
+
+.export-btn {
+    width: 160px !important;
+    background: #28a745 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

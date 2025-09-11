@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output, ChangeDetectorRef } from "@angular/core";
+import { Component, EventEmitter, Output, Input, ChangeDetectorRef, OnInit } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from "primeng/button";
 import { Product } from '../../models/product';
 import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 @Component({
     selector: "app-dialog",
@@ -11,7 +12,9 @@ import * as XLSX from 'xlsx';
     styleUrls: ["./dialog.component.css"],
     imports: [CommonModule, TableModule, ButtonModule]
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
+    @Input() mode: 'import' | 'export' = 'import';
+    @Input() exportData: Product[] = [];
     @Output() close = new EventEmitter<void>();
     @Output() dataImported = new EventEmitter<Product[]>();
 
@@ -22,6 +25,13 @@ export class DialogComponent {
     isValidData: boolean = false;
 
     constructor(private cdr: ChangeDetectorRef) { }
+
+    ngOnInit() {
+        if (this.mode === 'export' && this.exportData) {
+            this.previewData = this.exportData;
+            this.isValidData = true;
+        }
+    }
 
     onFileSelected(event: any): void {
         const file = event.target.files[0];
@@ -166,5 +176,22 @@ export class DialogComponent {
 
     closeDialog(): void {
         this.close.emit();
+    }
+
+    exportToExcel(): void {
+        if (this.mode === 'export' && this.previewData.length > 0) {
+            // Loại bỏ trường id khỏi mỗi sản phẩm
+            const exportData = this.previewData.map(({ id, ...rest }) => rest);
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Products');
+
+            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+
+            saveAs(blob, 'products.xlsx');
+            this.closeDialog();
+        }
     }
 }

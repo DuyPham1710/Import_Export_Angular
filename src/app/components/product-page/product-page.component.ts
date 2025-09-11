@@ -7,6 +7,8 @@ import { CreateProductRequest, Product } from "../../models/product";
 import { CheckboxModule } from "primeng/checkbox";
 import { ProductService } from "../../services/product.service";
 import { ButtonModule } from "primeng/button";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 @Component({
     selector: "app-product-page",
@@ -46,9 +48,44 @@ export class ProductPageComponent implements OnInit {
 
     selectedProducts: Product[] = [];
 
+    isSelected(product: any): boolean {
+        return this.selectedProducts.some(p => p.id === product.id);
+    }
+
+    toggleSelection(product: any, event: any): void {
+        if (event.target.checked) {
+            this.selectedProducts.push(product);
+        } else {
+            this.selectedProducts = this.selectedProducts.filter(p => p.id !== product.id);
+        }
+    }
+
+    isAllSelected(): boolean {
+        return this.products.length > 0 && this.selectedProducts.length === this.products.length;
+    }
+
+    toggleAll(event: any): void {
+        if (event.target.checked) {
+            this.selectedProducts = [...this.products];
+        } else {
+            this.selectedProducts = [];
+        }
+    }
+
     showDialog = false;
+    dialogMode: 'import' | 'export' = 'import';
 
     openDialog() {
+        this.dialogMode = 'import';
+        this.showDialog = true;
+    }
+
+    openExportDialog() {
+        if (this.selectedProducts.length === 0) {
+            alert('Vui lòng chọn ít nhất một sản phẩm để export');
+            return;
+        }
+        this.dialogMode = 'export';
         this.showDialog = true;
     }
 
@@ -71,9 +108,9 @@ export class ProductPageComponent implements OnInit {
                 console.error('Lỗi khi lưu sản phẩm import:', err);
             }
         });
-        // // Thêm dữ liệu import vào danh sách hiện tại
-        // this.products = [...this.products, ...importedProducts];
-        // this.cdr.detectChanges();
-        // console.log('Đã import', importedProducts.length, 'sản phẩm');
+    }
+
+    handleExport() {
+        this.openExportDialog();
     }
 }

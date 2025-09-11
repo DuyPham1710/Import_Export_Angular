@@ -2,14 +2,14 @@
     <div class="dialog-content" (click)="$event.stopPropagation()">
         <!-- Header -->
         <div class="dialog-header">
-            <h2>Import Products</h2>
+            <h2>{{ mode === 'import' ? 'Import Products' : 'Export Products' }}</h2>
             <button class="close-btn" (click)="closeDialog()">
                 <i class="pi pi-times"></i>
             </button>
         </div>
 
-        <!-- File Upload Section -->
-        <div class="file-upload-section">
+        <!-- File Upload Section - Only for Import -->
+        <div class="file-upload-section" *ngIf="mode === 'import'">
             <div class="file-upload-container">
                 <input #fileInput type="file" accept=".xlsx,.xls,.csv" (change)="onFileSelected($event)"
                     style="display: none;">
@@ -19,6 +19,11 @@
                 </button>
                 <span class="file-name">{{ selectedFileName || 'Không có tập tin nào được chọn' }}</span>
             </div>
+        </div>
+
+        <!-- Export Info Section - Only for Export -->
+        <div class="export-info-section" *ngIf="mode === 'export'">
+            <p><strong>{{ previewData.length }}</strong> sản phẩm đã được chọn để export</p>
         </div>
 
         <!-- Preview Table -->
@@ -72,8 +77,13 @@
             <button pButton type="button" label="Hủy bỏ" icon="pi pi-times" class="p-button-secondary cancel-btn"
                 (click)="closeDialog()">
             </button>
+            <!-- Import Button -->
             <button pButton type="button" label="Lưu" icon="pi pi-check" class="p-button-danger save-btn"
-                [disabled]="!isValidData || isLoading" (click)="saveData()">
+                *ngIf="mode === 'import'" [disabled]="!isValidData || isLoading" (click)="saveData()">
+            </button>
+            <!-- Export Button -->
+            <button pButton type="button" label="Export" icon="pi pi-download" class="p-button-success export-btn"
+                *ngIf="mode === 'export'" [disabled]="previewData.length === 0" (click)="exportToExcel()">
             </button>
         </div>
     </div>

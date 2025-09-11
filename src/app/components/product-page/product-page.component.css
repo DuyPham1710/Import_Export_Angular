@@ -189,3 +189,29 @@
     align-items: center;
     gap: 8px;
 }
+
+.checkbox-table {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #333;
+}
+
+.action {
+    display: flex;
+    gap: 44px;
+    margin-bottom: 40px;
+}
+
+.export-btn {
+    width: 160px !important;
+    background: #28a745 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
