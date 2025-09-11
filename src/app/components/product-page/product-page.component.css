@@ -1,0 +1,191 @@
+.product-table-container {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.product-table-container h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Table styling */
+:host ::ng-deep .p-datatable {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 1rem;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    border: none;
+    padding: 1rem 0.75rem;
+    text-align: left;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr {
+    transition: all 0.2s ease;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr:hover {
+    background-color: #f1f3f4;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    padding: 1rem 0.75rem;
+    border: none;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Category badge styling */
+.category-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Price styling */
+.price-text {
+    font-weight: 700;
+    color: #28a745;
+    font-size: 1rem;
+}
+
+/* Stock status styling */
+.stock-high {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.stock-medium {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.stock-low {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* Rating styling */
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating-text {
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Description styling */
+.description-text {
+    color: #6c757d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Search input styling */
+:host ::ng-deep .p-input-icon-left>i:first-of-type {
+    color: #6c757d;
+}
+
+:host ::ng-deep .p-inputtext {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+:host ::ng-deep .p-inputtext:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Paginator styling */
+:host ::ng-deep .p-paginator {
+    background: white;
+    border: none;
+    border-top: 1px solid #e9ecef;
+    padding: 1rem;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+    border-radius: 6px;
+    margin: 0 2px;
+    transition: all 0.2s ease;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+}
+
+/* Empty state styling */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.empty-state p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .product-table-container {
+        padding: 1rem;
+    }
+
+    .product-table-container h2 {
+        font-size: 1.5rem;
+    }
+
+    :host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .category-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+    }
+}
+
+.upload-btn {
+    width: 160px !important;
+    background: #4076f6 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

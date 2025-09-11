@@ -1,0 +1,80 @@
+<div class="dialog-backdrop" (click)="closeDialog()">
+    <div class="dialog-content" (click)="$event.stopPropagation()">
+        <!-- Header -->
+        <div class="dialog-header">
+            <h2>Import Products</h2>
+            <button class="close-btn" (click)="closeDialog()">
+                <i class="pi pi-times"></i>
+            </button>
+        </div>
+
+        <!-- File Upload Section -->
+        <div class="file-upload-section">
+            <div class="file-upload-container">
+                <input #fileInput type="file" accept=".xlsx,.xls,.csv" (change)="onFileSelected($event)"
+                    style="display: none;">
+                <button pButton type="button" class="p-button-danger upload-btn" (click)="fileInput.click()">
+                    <i class="pi pi-upload"></i>
+                    Choose
+                </button>
+                <span class="file-name">{{ selectedFileName || 'Không có tập tin nào được chọn' }}</span>
+            </div>
+        </div>
+
+        <!-- Preview Table -->
+        <div class="preview-section" *ngIf="previewData.length > 0">
+            <p-table [value]="previewData" [paginator]="true" [rows]="25" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Hiển thị {first} tới {last} của {totalRecords} mục"
+                [tableStyle]="{'min-width': '50rem'}">
+                <ng-template #header>
+                    <tr>
+                        <!-- <th>Id</th> -->
+                        <th>Product Name</th>
+                        <th>Images</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-product>
+                    <tr [class.invalid-row]="!isValidProduct(product)">
+                        <!-- <td>{{product.id}}</td> -->
+                        <td>{{product.productName}}</td>
+                        <td><img [src]="product.images" [alt]="product.productName" width="50" class="shadow-lg" /></td>
+                        <td>{{product.description}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.stock}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <!-- No Data Message -->
+        <div class="no-data" *ngIf="previewData.length === 0 && !isLoading">
+            <p>Không có dữ liệu</p>
+        </div>
+
+        <!-- Loading Message -->
+        <div class="loading" *ngIf="isLoading">
+            <p>Đang tải dữ liệu...</p>
+        </div>
+
+        <!-- Validation Messages -->
+        <div class="validation-messages" *ngIf="validationErrors.length > 0">
+            <h4>Lỗi validation:</h4>
+            <ul>
+                <li *ngFor="let error of validationErrors">{{ error }}</li>
+            </ul>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="dialog-actions">
+            <button pButton type="button" label="Hủy bỏ" icon="pi pi-times" class="p-button-secondary cancel-btn"
+                (click)="closeDialog()">
+            </button>
+            <button pButton type="button" label="Lưu" icon="pi pi-check" class="p-button-danger save-btn"
+                [disabled]="!isValidData || isLoading" (click)="saveData()">
+            </button>
+        </div>
+    </div>
+</div>
