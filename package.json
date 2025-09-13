@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:github": "ng build --configuration=production --base-href=/UI/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:UI": "node dist/UI/server/server.mjs"
