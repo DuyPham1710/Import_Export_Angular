@@ -1,6 +1,6 @@
 
 export default {
-  basePath: '/import-export',
+  basePath: '/Import_Export_Angular',
   supportedLocales: {
   "en-US": ""
 },

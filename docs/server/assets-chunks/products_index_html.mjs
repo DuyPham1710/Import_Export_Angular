@@ -1,7 +1,7 @@
 export default `<!DOCTYPE html><html lang="en" data-beasties-container><head>
   <meta charset="utf-8">
   <title>UI</title>
-  <base href="/import-export/">
+  <base href="/Import_Export_Angular/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 <style>@font-face{font-family:primeicons;font-display:block;src:url("./media/primeicons-RSSEDYLY.eot");src:url("./media/primeicons-RSSEDYLY.eot?#iefix") format("embedded-opentype"),url("./media/primeicons-4GST5W3O.woff2") format("woff2"),url("./media/primeicons-P53SE5CV.woff") format("woff"),url("./media/primeicons-GEFHGEHP.ttf") format("truetype"),url("./media/primeicons-DHQU4SEP.svg?#primeicons") format("svg");font-weight:400;font-style:normal}.pi{font-family:primeicons;speak:none;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;display:inline-block;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.pi:before{--webkit-backface-visibility:hidden;backface-visibility:hidden}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0)}to{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}.pi-upload:before{content:"\\e934"}.pi-download:before{content:"\\e956"}body{font-family:Lato,sans-serif;margin:0;padding:50px;background-color:#fff}
