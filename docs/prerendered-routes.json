@@ -1,0 +1,6 @@
+{
+  "routes": {
+    "/import-export": {},
+    "/import-export/products": {}
+  }
+}
