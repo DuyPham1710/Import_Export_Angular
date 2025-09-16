@@ -3,19 +3,21 @@ import { DialogComponent } from "../dialog/dialog.component";
 import { TableModule } from "primeng/table";
 import { InputTextModule } from "primeng/inputtext";
 import { CommonModule } from "@angular/common";
-import { CreateProductRequest, Product } from "../../models/product";
+import { CreateProductRequest, Product, PaginatedResponse } from "../../models/product";
 import { CheckboxModule } from "primeng/checkbox";
 import { ProductService } from "../../services/product.service";
 import { ButtonModule } from "primeng/button";
+import { PaginatorModule } from "primeng/paginator";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { PAGE_SIZE } from "../../../core/constants/constant";
 
 @Component({
     selector: "app-product-page",
     standalone: true,
     templateUrl: "./product-page.component.html",
     styleUrls: ["./product-page.component.css"],
-    imports: [TableModule, InputTextModule, CommonModule, CheckboxModule, ButtonModule, DialogComponent],
+    imports: [TableModule, InputTextModule, CommonModule, CheckboxModule, ButtonModule, DialogComponent, PaginatorModule],
 })
 export class ProductPageComponent implements OnInit {
     constructor(
@@ -24,15 +26,47 @@ export class ProductPageComponent implements OnInit {
     ) { }
 
     products: Product[] = [];
+    paginatedData: PaginatedResponse<Product> | null = null;
+    currentPage: number = 1;
+    pageSize: number = PAGE_SIZE;
+    totalRecords: number = 0;
+
     ngOnInit(): void {
         this.loadProducts();
     }
 
-    loadProducts() {
-        this.productService.getAllProducts().subscribe({
+    goToPage(page: number) {
+        if (page < 1 || page > this.totalRecords) return;
+        this.loadProducts(page, this.pageSize);
+    }
+
+    getPages(): number[] {
+        const pages: number[] = [];
+        const maxVisible = 5; // hiển thị tối đa 5 số trang
+
+        let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
+        let end = Math.min(this.totalRecords, start + maxVisible - 1);
+
+        // Nếu không đủ maxVisible thì dịch start
+        if (end - start + 1 < maxVisible) {
+            start = Math.max(1, end - maxVisible + 1);
+        }
+
+        for (let i = start; i <= end; i++) {
+            pages.push(i);
+        }
+
+        return pages;
+    }
+
+    loadProducts(page: number = 1, limit: number = PAGE_SIZE) {
+        this.productService.getAllProducts(page, limit).subscribe({
             next: (data) => {
-                this.products = data;
-                // this.cdr.detectChanges();
+                this.paginatedData = data;
+                this.products = data.data;
+                this.currentPage = data.page;
+                this.pageSize = data.limit;
+                this.totalRecords = data.totalItems;
                 this.cdr.markForCheck();
             },
             error: (err) => console.error(err)

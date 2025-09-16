@@ -45,11 +45,42 @@
                 <td>{{product.productName}}</td>
                 <td><img [src]="product.images" [alt]="product.productName" width="50" class="shadow-lg" /></td>
                 <td>{{product.description}}</td>
-                <td>{{product.price}}</td>
+                <td>{{formatPrice(product.price)}}</td>
                 <td>{{product.stock}}</td>
                 <td>{{product.createdAt | date:'dd/MM/yyyy'}}</td>
-                <td>{{product.isActive}}</td>
+                <td>
+                    <span [class]="product.isActive ? 'badge-success' : 'badge-danger'">
+                        {{product.isActive ? 'Active' : 'Inactive'}}
+                    </span>
+                </td>
             </tr>
         </ng-template>
     </p-table>
+
+    <!-- Paginator -->
+    <div *ngIf="products.length > 0; else emptyList">
+        <div class="custom-pagination">
+            <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+                Trước
+            </button>
+
+            <ng-container *ngFor="let page of getPages()">
+                <button (click)="goToPage(page)" [class.active]="page === currentPage">
+                    {{ page }}
+                </button>
+            </ng-container>
+
+            <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalRecords">
+                Sau
+            </button>
+        </div>
+    </div>
+
+
+
+    <ng-template #emptyList>
+        <p>Không có sản phẩm</p>
+    </ng-template>
+
+
 </div>

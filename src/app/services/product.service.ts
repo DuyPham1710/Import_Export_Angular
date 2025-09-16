@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { API_URL } from "../../core/constants/constant";
-import { CreateProductRequest, Product } from "../models/product";
+import { CreateProductRequest, Product, PaginatedResponse } from "../models/product";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -11,8 +11,8 @@ export class ProductService {
 
     constructor(private http: HttpClient) { }
 
-    getAllProducts(): Observable<Product[]> {
-        return this.http.get<Product[]>(`${API_URL}/Product`);
+    getAllProducts(page: number, limit: number): Observable<PaginatedResponse<Product>> {
+        return this.http.get<PaginatedResponse<Product>>(`${API_URL}/Product?page=${page}&limit=${limit}`);
     }
 
     createProduct(products: CreateProductRequest): Observable<Product[]> {
