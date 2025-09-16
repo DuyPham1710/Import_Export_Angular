@@ -5,6 +5,8 @@ export interface Product {
     price: string;
     stock: string;
     images: string;
+    createdAt: Date;
+    isActive: boolean;
 }
 
 export interface CreateProductRequest {

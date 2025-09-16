@@ -93,8 +93,15 @@ export class DialogComponent implements OnInit {
         }
 
         // Lấy header từ dòng đầu tiên
-        const headers = data[0];
-        const expectedHeaders = ['ProductName', 'Description', 'Price', 'Stock', 'Images'];
+        // const headers = data[0];
+        const headers: string[] = data[0].map((h: any) => String(h).trim().toLowerCase());
+        const expectedHeaders = ['productname', 'description', 'price', 'stock', 'images', 'createdat', 'isactive'];
+
+        // Map header -> index
+        const headerIndex: { [key: string]: number } = {};
+        headers.forEach((h, i) => {
+            headerIndex[h] = i;
+        });
 
         // Kiểm tra header
         const missingHeaders = expectedHeaders.filter(header =>
@@ -115,12 +122,13 @@ export class DialogComponent implements OnInit {
 
             try {
                 const product: Product = {
-                    // id: this.parseNumber(row[0]),
-                    productName: this.parseString(row[0]),
-                    description: this.parseString(row[1]),
-                    price: this.parseString(row[2]),
-                    stock: this.parseString(row[3]),
-                    images: this.parseString(row[4])
+                    productName: this.parseString(row[headerIndex['productname']]),
+                    description: this.parseString(row[headerIndex['description']]),
+                    price: this.parseString(row[headerIndex['price']]),
+                    stock: this.parseString(row[headerIndex['stock']]),
+                    images: this.parseString(row[headerIndex['images']]),
+                    createdAt: this.formatDate(row[headerIndex['createdat']]) || new Date(),
+                    isActive: Boolean(row[headerIndex['isactive']]) || false
                 };
 
                 // Validate từng field
@@ -140,6 +148,27 @@ export class DialogComponent implements OnInit {
         this.isValidData = this.validationErrors.length === 0 && products.length > 0;
         this.isLoading = false;
         this.cdr.detectChanges();
+    }
+
+    private formatDate(value: any): Date | null {
+        if (value === null || value === undefined || value === '') return null;
+
+        // Nếu là số (Excel date serial)
+        if (typeof value === 'number') {
+            const dateObj = XLSX.SSF.parse_date_code(value);
+            if (dateObj) {
+                // Dùng Date.UTC để tránh lệch múi giờ
+                return new Date(Date.UTC(dateObj.y, dateObj.m - 1, dateObj.d));
+            }
+        }
+
+        // Nếu là string thì parse bình thường
+        const parsed = new Date(value);
+        if (!isNaN(parsed.getTime())) {
+            return parsed;
+        }
+
+        return null;
     }
 
     private parseNumber(value: any): number {
@@ -201,7 +230,14 @@ export class DialogComponent implements OnInit {
     exportToExcel(): void {
         if (this.mode === 'export' && this.previewData.length > 0) {
             // Loại bỏ trường id khỏi mỗi sản phẩm
-            const exportData = this.previewData.map(({ id, ...rest }) => rest);
+            const exportData = this.previewData.map(({ id, ...rest }) => ({
+                ...rest,
+                price: Number(rest.price),
+                stock: Number(rest.stock),
+                createdAt: this.formatDate(rest.createdAt),
+                isActive: Boolean(rest.isActive) || false
+            }));
+
             const worksheet = XLSX.utils.json_to_sheet(exportData);
             const workbook = XLSX.utils.book_new();
 
