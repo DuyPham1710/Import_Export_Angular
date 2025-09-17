@@ -61,7 +61,7 @@
     <div *ngIf="products.length > 0; else emptyList">
         <div class="custom-pagination">
             <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
-                Trước
+                Previous
             </button>
 
             <ng-container *ngFor="let page of getPages()">
@@ -71,7 +71,7 @@
             </ng-container>
 
             <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalRecords">
-                Sau
+                Next
             </button>
         </div>
     </div>
